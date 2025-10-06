@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/0_Poultry_Detect_icon.png') }}">
+    <title>Poultry Detect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Poultry Detect</h1>
+    </header>
+    <nav>
+        <a href="/">HOME</a> | <a href="/predict">PREDICTION PAGE</a>
+    </nav>
+
+    <div class="content">
+        <h2>Prediction</h2>
+        <h3>Image Classification</h3>
+
+        <!-- Feedback Section -->
+        <h3>We value your feedback!</h3>
+        <form method="post" action="/feedback">
+            <input type="text" name="name" placeholder="Your Name" required><br>
+            <input type="email" name="email" placeholder="Your Email" required><br>
+            <input type="tel" name="phone" placeholder="Your Phone Number" required><br>
+            <textarea name="suggestion" rows="4" placeholder="Enter your feedback here..." required></textarea><br>
+            <button type="submit" class="button">Submit Feedback</button>
+        </form>
+
+        {% if message %}
+            <p style="color: lightgreen; font-weight: bold; margin-top:10px;">{{ message }}</p>
+        {% endif %}
+    </div>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 . All rights reserved.</p>
+        <p>
+            <a href="privacy.html">Privacy Policy</a> | 
+            <a href="terms.html">Terms of Service</a>
+        </p>
+    </footer>
+</body>
+</html>

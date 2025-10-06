@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Poultry Detect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1> Poultry Detect</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/predict">Disease Detection</a></li>
+                <li><a href="/feedback" class="active">Feedback</a></li>
+                <!-- <li><a href="/about">About</a></li> -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                        <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' }}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>Share Your Feedback</h1>
+                <p>Help us improve our AI disease detection system</p>
+            </section>
+
+            <!-- Feedback Form -->
+            <section>
+                <div class="card" style="max-width: 600px; margin: 0 auto;">
+                    <h3 style="text-align: center; margin-bottom: 2rem;">
+                        <i class="fas fa-comment"></i> We Value Your Input
+                    </h3>
+                    
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="name">Name *</label>
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone (Optional)</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Your Phone Number">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" placeholder="Share your experience, suggestions, or report any issues..." required></textarea>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <button type="submit" class="btn">
+                                <i class="fas fa-paper-plane"></i> Submit Feedback
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Contact Info -->
+            <section class="grid">
+                <div class="card">
+                    <div style="text-align: center;">
+                        <i class="fas fa-envelope icon green"></i>
+                        <h3>Email Support</h3>
+                        <p>Get in touch with our team for technical support and inquiries.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div style="text-align: center;">
+                        <i class="fas fa-bug icon orange"></i>
+                        <h3>Report Issues</h3>
+                        <p>Found a bug or incorrect diagnosis? Let us know to improve our AI model.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div style="text-align: center;">
+                        <i class="fas fa-lightbulb icon blue"></i>
+                        <h3>Suggestions</h3>
+                        <p>Have ideas for new features or improvements? We'd love to hear them!</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Poultry Detect. All rights reserved.</p>
+            <p>AI-powered poultry health monitoring system</p>
+        </div>
+    </footer>
+</body>
+</html>

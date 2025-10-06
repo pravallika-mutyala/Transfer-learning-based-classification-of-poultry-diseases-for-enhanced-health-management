@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poultry Detect - AI Disease Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <!-- <h1><i class="fas fa-dove"></i> Poultry Detect</h1> -->
+                <h1> Poultry Detect</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/predict">Disease Detection</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <!-- <li><a href="/about">About</a></li> -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>AI-Powered Poultry Disease Detection</h1>
+                <p>Instantly identify diseases in your poultry with advanced machine learning. Get accurate diagnoses and treatment recommendations in seconds.</p>
+                <a href="/predict" class="btn">
+                    <i class="fas fa-camera"></i> Start Detection
+                </a>
+            </section>
+
+            <!-- Features -->
+            <section class="grid">
+                <div class="card">
+                    <i class="fas fa-microscope icon green"></i>
+                    <h3>Accurate Detection</h3>
+                    <p>Our AI model detects multiple poultry diseases with high accuracy using advanced image recognition technology.</p>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-clock icon blue"></i>
+                    <h3>Instant Results</h3>
+                    <p>Get diagnosis results in seconds. Upload an image and receive immediate feedback on your poultry's health.</p>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-prescription-bottle-alt icon orange"></i>
+                    <h3>Treatment Guide</h3>
+                    <p>Receive specific treatment recommendations and prevention tips for each detected condition.</p>
+                </div>
+            </section>
+
+            <!-- Disease Types -->
+            <section>
+                <div class="card">
+                    <h3 style="text-align: center; margin-bottom: 2rem;">Detectable Diseases</h3>
+                    <div class="grid">
+                        <div style="text-align: center;">
+                            <i class="fas fa-bug icon orange"></i>
+                            <h4>Coccidiosis</h4>
+                            <p>Parasitic intestinal infection</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <i class="fas fa-heart icon green"></i>
+                            <h4>Healthy</h4>
+                            <p>No disease detected</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <i class="fas fa-virus icon red"></i>
+                            <h4>Newcastle Disease</h4>
+                            <p>Viral respiratory infection</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <i class="fas fa-bacteria icon" style="color: #9c27b0;"></i>
+                            <h4>Salmonella</h4>
+                            <p>Bacterial digestive infection</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works -->
+            <section>
+                <div class="card">
+                    <h3 style="text-align: center; margin-bottom: 2rem;">How It Works</h3>
+                    <div class="grid">
+                        <div style="text-align: center;">
+                            <i class="fas fa-upload icon green"></i>
+                            <h3>1. Upload Image</h3>
+                            <p>Take a clear photo of your poultry and upload it to our platform.</p>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <i class="fas fa-brain icon blue"></i>
+                            <h3>2. AI Analysis</h3>
+                            <p>Our AI model analyzes the image for disease indicators and symptoms.</p>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <i class="fas fa-clipboard-list icon orange"></i>
+                            <h3>3. Get Results</h3>
+                            <p>Receive detailed diagnosis with confidence score and treatment advice.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Poultry Detect. All rights reserved.</p>
+            <p>AI-powered poultry health monitoring system</p>
+        </div>
+    </footer>
+</body>
+</html>

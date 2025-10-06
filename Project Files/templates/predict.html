@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Detection - Poultry Detect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1> Poultry Detect</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/predict" class="active">Disease Detection</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <!-- <li><a href="/about">About</a></li> -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                        <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' }}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>AI Disease Detection</h1>
+                <p>Upload a clear image of your poultry for instant health analysis</p>
+            </section>
+
+            <!-- Upload Form -->
+            <section>
+                <div class="card" style="max-width: 600px; margin: 0 auto;">
+                    <h3 style="text-align: center; margin-bottom: 2rem;">
+                        <i class="fas fa-camera"></i> Upload Poultry Image
+                    </h3>
+                    
+                    <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                        <div class="form-group">
+                            <div class="file-upload">
+                                <input type="file" name="image" id="imageInput" accept=".png,.jpg,.jpeg,.gif,.webp" required>
+                                <div class="upload-area" id="uploadArea">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <h4>Click or drag to upload image</h4>
+                                    <p>Supported: PNG, JPG, JPEG, GIF, WEBP (Max: 16MB)</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Image Preview -->
+                        <div id="imagePreview" class="preview" style="display: none;">
+                            <h4>Selected Image:</h4>
+                            <img id="previewImg" alt="Preview">
+                            <p id="fileName"></p>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <button type="submit" class="btn" id="submitBtn">
+                                <i class="fas fa-search"></i> Analyze Image
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Instructions -->
+            <section class="grid">
+                <div class="card">
+                    <div style="text-align: center;">
+                        <i class="fas fa-sun icon" style="color: #ffc107;"></i>
+                        <h3>Good Lighting</h3>
+                        <p>Take photos in bright, natural light for clearer images.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div style="text-align: center;">
+                        <i class="fas fa-eye icon green"></i>
+                        <h3>Clear Focus</h3>
+                        <p>Ensure the poultry is in sharp focus and clearly visible.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div style="text-align: center;">
+                        <i class="fas fa-search-plus icon blue"></i>
+                        <h3>Close-up View</h3>
+                        <p>Capture affected areas or symptoms clearly.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detectable Diseases -->
+            <section>
+                <div class="card">
+                    <h3 style="text-align: center; margin-bottom: 2rem;">Detectable Diseases</h3>
+                    <div class="grid">
+                        <div style="text-align: center; padding: 1rem; background: rgba(76,175,80,0.1); border-radius: 8px;">
+                            <i class="fas fa-heart icon green"></i>
+                            <h4>Healthy</h4>
+                            <p>No disease detected</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(255,193,7,0.1); border-radius: 8px;">
+                            <i class="fas fa-bug icon orange"></i>
+                            <h4>Coccidiosis</h4>
+                            <p>Parasitic infection</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(244,67,54,0.1); border-radius: 8px;">
+                            <i class="fas fa-virus icon red"></i>
+                            <h4>Newcastle Disease</h4>
+                            <p>Viral infection</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(156,39,176,0.1); border-radius: 8px;">
+                            <i class="fas fa-bacteria icon" style="color: #9c27b0;"></i>
+                            <h4>Salmonella</h4>
+                            <p>Bacterial infection</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Poultry Detect. All rights reserved.</p>
+            <p>AI-powered poultry health monitoring system</p>
+        </div>
+    </footer>
+
+    <script>
+        // Image upload functionality
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const fileName = document.getElementById('fileName');
+        const uploadArea = document.getElementById('uploadArea');
+        const uploadForm = document.getElementById('uploadForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // File selection
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validate file size
+                if (file.size > 16 * 1024 * 1024) {
+                    alert('File size must be less than 16MB');
+                    this.value = '';
+                    return;
+                }
+
+                // Validate file type
+                const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Please upload only PNG, JPG, JPEG, GIF, or WEBP files');
+                    this.value = '';
+                    return;
+                }
+
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    fileName.textContent = file.name;
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#4caf50';
+            this.style.background = 'rgba(76,175,80,0.1)';
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'rgba(255,255,255,0.5)';
+            this.style.background = 'rgba(255,255,255,0.05)';
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'rgba(255,255,255,0.5)';
+            this.style.background = 'rgba(255,255,255,0.05)';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                imageInput.files = files;
+                imageInput.dispatchEvent(new Event('change'));
+            }
+        });
+
+        // Form submission
+        uploadForm.addEventListener('submit', function(e) {
+            if (!imageInput.files[0]) {
+                e.preventDefault();
+                alert('Please select an image file');
+                return;
+            }
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+            submitBtn.disabled = true;
+        });
+    </script>
+</body>
+</html>
