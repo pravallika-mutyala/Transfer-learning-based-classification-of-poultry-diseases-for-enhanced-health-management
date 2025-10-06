@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - Poultry Detect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .confidence-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 5px solid;
+        }
+        .confidence-red { background: rgba(244,67,54,0.1); border-color: #f44336; color: #faa8a3; }
+        .confidence-orange { background: rgba(255,152,0,0.1); border-color: #ff9800; color: #f7cb89; }
+        .confidence-yellow { background: rgba(255,235,59,0.1); border-color: #ffeb3b; color: #eccc98; }
+        .confidence-lightgreen { background: rgba(139,195,74,0.1); border-color: #8bc34a; color: #a9e376; }
+        .confidence-green { background: rgba(76,175,80,0.1); border-color: #4caf50; color: #98e79c; }
+        
+        .treatment-box {
+            background: rgba(33,150,243,0.1);
+            border-left: 4px solid #2196f3;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .treatment-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .treatment-item:last-child { border-bottom: none; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1> Poultry Detect</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/predict" class="active">Disease Detection</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <!-- <li><a href="/about">About</a></li> -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Results -->
+            <section class="hero">
+                <h1><i class="fas fa-microscope"></i> Analysis Results</h1>
+                <p>AI-powered diagnosis with confidence assessment</p>
+            </section>
+
+            <section>
+                <div class="card" style="max-width: 700px; margin: 0 auto;">
+                    <!-- Uploaded Image -->
+                    <div class="preview" style="text-align: center;">
+                        <h3>Analyzed Image</h3>
+                        <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="Analyzed Image" style="max-width: 300px; border-radius: 12px;">
+                    </div>
+
+                    <!-- Disease Result -->
+                    <div style="text-align: center; margin: 2rem 0;">
+                        {% if prediction == "Healthy" %}
+                            <h2 style="color: #4caf50; font-size: 2rem;">
+                                <i class="fas fa-heart"></i> {{ prediction }}
+                            </h2>
+                        {% else %}
+                            <h2 style="color: #f44336; font-size: 2rem;">
+                                <i class="fas fa-exclamation-triangle"></i> {{ prediction }}
+                            </h2>
+                        {% endif %}
+                        
+                        <p style="font-size: 1.2rem; color: #66bb6a; margin: 1rem 0;">
+                            <strong>Confidence: {{ confidence }}</strong>
+                        </p>
+                    </div>
+
+                    <!-- Confidence Level Box -->
+                    <div class="confidence-box confidence-{{ confidence_info.color }}">
+                        <h3><i class="fas fa-chart-line"></i> {{ confidence_info.level }}</h3>
+                        <p style="margin: 0.5rem 0;"><strong>System Message:</strong> {{ confidence_info.message }}</p>
+                        <p><strong>Recommendation:</strong> {{ confidence_info.recommendation }}</p>
+                    </div>
+
+                    <!-- Show treatment info only for good confidence -->
+                    {% if confidence_info.show_treatment %}
+                        <!-- Solution -->
+                        <div class="card" style="background: rgba(76,175,80,0.1); border-left: 4px solid #4caf50;">
+                            <h3><i class="fas fa-prescription-bottle-alt"></i> Treatment Recommendation</h3>
+                            <p style="font-size: 1.1rem;">{{ disease_info.solution }}</p>
+                        </div>
+
+                        <!-- Treatment Timeline -->
+                        <div class="treatment-box">
+                            <h3><i class="fas fa-clock"></i> Treatment Timeline</h3>
+                            <div class="treatment-item">
+                                <span><strong>Treatment Method:</strong></span>
+                                <span>{{ disease_info.treatment }}</span>
+                            </div>
+                            <div class="treatment-item">
+                                <span><strong>Expected Cure Time:</strong></span>
+                                <span>{{ disease_info.cure_time }}</span>
+                            </div>
+                            <div class="treatment-item">
+                                <span><strong>Full Recovery:</strong></span>
+                                <span>{{ disease_info.recovery }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- Warning for low confidence -->
+                    {% if not confidence_info.show_treatment %}
+                        <div style="background: rgba(244,67,54,0.2); border: 1px solid #f44336; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; text-align: center;">
+                            <h3 style="color: #f44336;"><i class="fas fa-exclamation-triangle"></i> Low Confidence Detection</h3>
+                            <p style="color: #f44336;">
+                                This result may not be accurate. Please upload a clearer image or consult with a veterinarian.
+                            </p>
+                        </div>
+                    {% endif %}
+
+                    <!-- Professional Advice -->
+                    {% if prediction != "Healthy" and confidence_info.show_treatment %}
+                        <div style="background: rgba(156,39,176,0.1); border: 1px solid #9c27b0; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                            <h3 style="color: #e969ff;"><i class="fas fa-user-md"></i> Professional Advice</h3>
+                            <p style="color: #efbff8;">
+                                While our AI provides reliable diagnosis, always consult with a qualified veterinarian for treatment confirmation.
+                            </p>
+                        </div>
+                    {% endif %}
+
+                    <!-- Action Buttons -->
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="/predict" class="btn">
+                            <i class="fas fa-camera"></i> Analyze Another Image
+                        </a>
+                        <a href="/feedback" class="btn" style="margin-left: 1rem; background: rgba(255,255,255,0.1);">
+                            <i class="fas fa-comment"></i> Share Feedback
+                        </a>
+                    </div>
+
+                    <!-- Confidence Guide -->
+                    <div style="margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <!-- <h4 style="text-align: center; margin-bottom: 1rem;"><i class="fas fa-info"></i> Confidence Level Guide</h4> -->
+                        <h4 style="text-align: center; margin-bottom: 1rem;"> Confidence Level Guide</h4>
+                        <div style="font-size: 0.9rem; color: #ccc;">
+                            <p><strong>≤50%:</strong> Unreliable - Retake photo with better lighting</p>
+                            <p><strong>51-75%:</strong> Low - Consult veterinarian for verification</p>
+                            <p><strong>76-85%:</strong> Good - Follow treatment guidelines carefully</p>
+                            <p><strong>86-95%:</strong> High - Start treatment with confidence</p>
+                            <p><strong>>95%:</strong> Excellent - Proceed with full confidence</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Poultry Detect. All rights reserved.</p>
+            <p>AI-powered poultry health monitoring system</p>
+        </div>
+    </footer>
+</body>
+</html>
